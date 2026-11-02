@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bibliometría IA · Análisis de Algoritmos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div>
+      <h1>Análisis de algoritmos en el contexto de la bibliometría</h1>
+      <p class="sub">Corpus: 20 artículos sobre inteligencia artificial en educación · Universidad del Quindío · 2026-2</p>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="corpus" aria-selected="true">Corpus</button>
+      <button role="tab" data-tab="similitud">1 · Similitud</button>
+      <button role="tab" data-tab="clustering">2 · Agrupamiento</button>
+      <button role="tab" data-tab="busqueda">3 · Patrones</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ======================= CORPUS ======================= -->
+  <section id="corpus" class="panel active">
+    <p class="intro">Abstracts extraídos automáticamente de los PDF con PDFBox y una heurística propia de
+      marcadores. El título, los autores, el año y la revista provienen de <code>metadata.tsv</code>.</p>
+    <div id="status" class="status"></div>
+    <input id="corpus-filter" class="input" placeholder="Filtrar por título, autor o revista">
+    <div id="corpus-list" class="cards"></div>
+  </section>
+
+  <!-- ======================= SIMILITUD ======================= -->
+  <section id="similitud" class="panel">
+    <p class="intro">Seleccione dos o más artículos. Se comparan sus abstracts con cuatro algoritmos clásicos y
+      dos modelos de IA basados en embeddings.</p>
+    <div class="grid2">
+      <div class="box">
+        <h3>Artículos <small id="sel-count"></small></h3>
+        <div class="row"><button class="link" id="sel-all">Todos</button><button class="link" id="sel-none">Ninguno</button></div>
+        <div id="sim-articles" class="checklist"></div>
+      </div>
+      <div class="box">
+        <h3>Algoritmos</h3>
+        <div id="sim-algorithms" class="checklist"></div>
+        <div class="row">
+          <label>Levenshtein por
+            <select id="lev-level"><option value="caracter">carácter</option><option value="palabra">palabra</option></select></label>
+          <label>Needleman-Wunsch por
+            <select id="nw-level"><option value="palabra">palabra</option><option value="caracter">carácter</option></select></label>
+        </div>
+        <button class="primary" id="sim-run">Comparar</button>
+      </div>
+    </div>
+    <div id="sim-result"></div>
+
+    <div class="box">
+      <h3>Caso de estudio paso a paso</h3>
+      <div class="row wrap-row">
+        <label>Abstract A <select id="tr-a"></select></label>
+        <label>Abstract B <select id="tr-b"></select></label>
+        <label>Algoritmo <select id="tr-alg"></select></label>
+        <label>Símbolos/filas a mostrar <input id="tr-limit" type="number" value="10" min="2" max="60" class="num"></label>
+        <button class="primary" id="tr-run">Ver traza</button>
+      </div>
+      <div id="tr-result"></div>
+    </div>
+  </section>
+
+  <!-- ======================= CLUSTERING ======================= -->
+  <section id="clustering" class="panel">
+    <p class="intro">Preprocesamiento → matriz de distancias d = 1 − coseno → agrupamiento jerárquico aglomerativo con
+      tres criterios de enlace implementados desde cero → dendrogramas → evaluación con la correlación cofenética y la
+      silueta.</p>
+    <div class="box row wrap-row">
+      <label>Representación
+        <select id="cl-rep">
+          <option value="tfidf">TF-IDF (clásica)</option>
+          <option value="word-vectors">Embeddings de palabras (promedio)</option>
+          <option value="minilm">Embeddings MiniLM</option>
+        </select></label>
+      <label>Número de grupos k <input id="cl-k" type="number" min="0" max="19" value="0" class="num">
+        <small>(0 = el mejor según la silueta)</small></label>
+      <button class="primary" id="cl-run">Agrupar</button>
+    </div>
+    <div id="cl-result"></div>
+  </section>
+
+  <!-- ======================= BÚSQUEDA ======================= -->
+  <section id="busqueda" class="panel">
+    <p class="intro">Coincidencia exacta de cadenas en los 20 abstracts con Knuth-Morris-Pratt, Boyer-Moore y
+      Rabin-Karp, implementados sin funciones de búsqueda del lenguaje.</p>
+    <div class="box row wrap-row">
+      <label class="grow">Patrón <input id="pt-pattern" class="input" value="artificial intelligence"></label>
+      <label class="check"><input type="checkbox" id="pt-case"> Distinguir mayúsculas</label>
+      <button class="primary" id="pt-run">Buscar</button>
+      <button id="pt-bench">Medir rendimiento</button>
+    </div>
+    <div id="pt-result"></div>
+    <div id="pt-bench-result"></div>
+
+    <div class="box">
+      <h3>Caso de estudio paso a paso</h3>
+      <div class="row wrap-row">
+        <label>Artículo <select id="ptt-article"></select></label>
+        <label>Primo q (Rabin-Karp) <input id="ptt-prime" type="number" value="101" class="num"></label>
+        <label class="grow">Fragmento (vacío = oración con la primera ocurrencia)
+          <input id="ptt-fragment" class="input"></label>
+        <button class="primary" id="ptt-run">Ver traza</button>
+      </div>
+      <div id="ptt-result"></div>
+    </div>
+  </section>
+</main>
+<footer class="wrap foot">Giovanny Steven Contreras · Andrés Felipe Ortega — Análisis de Algoritmos, Universidad del Quindío</footer>
+<script src="app.js"></script>
+</body>
+</html>
