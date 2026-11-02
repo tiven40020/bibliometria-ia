@@ -1,0 +1,11 @@
+# Despliegue en Render (https://render.com) como servicio web gratuito con Docker.
+services:
+  - type: web
+    name: bibliometria-ia
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/info
+    envVars:
+      - key: HF_TOKEN
+        sync: false   # opcional: solo si no se publica la caché corpus/cache/minilm-embeddings.tsv
